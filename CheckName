@@ -1,3 +1,3 @@
 if game.PlaceId == 8328351891 then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/fur01d/Scripts/main/MansionTycoon.lua?token=GHSAT0AAAAAAB3HVUMIYOZZ3XCTLHJEIJHSY4D4DZA", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/fur01d/Scripts/main/MansionTycoon.lua", true))()
 end
