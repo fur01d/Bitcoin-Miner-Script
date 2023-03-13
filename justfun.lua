@@ -1,5 +1,5 @@
 print("-------------------------")
-
+-- Yeah i know my code is the piece of shit
 function GetPlayerInfo(plr_name)
     print("Target Name - " .. plr_name .. " || Gold - " .. game.Players[plr_name].Data.Gold.Value)
     for i, v in pairs(game.Players[plr_name].OtherData:GetChildren()) do
