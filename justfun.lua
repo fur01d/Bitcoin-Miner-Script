@@ -1,97 +1,33 @@
-local AllRockets = 4
-local CurrentRockets = 0
+print("-------------------------")
 
-local codename = nil
-local myname = nil
-local targetname = nil
-local player_list = {}
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/miroeramaa/TurtleLib/main/TurtleUiLib.lua"))()
-local Namewindow = library:Window("Позывные")
-local ShooterWindow = library:Window("Команды за стрелка")
-local TowerWindow = library:Window("Команды за наводчика")
-
-function GetPlayers()
-    while true do
-        for i, v in pairs(game.Players:GetChildren()) do
-            table.insert(player_list, v.Name)
-            wait(1)
-        end
-        wait(1)
-    end
-end
-
-function StartRocket()
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(codename .. ", " .. myname .. ", Принял, атакую цель!","All") ; wait(2)
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Три... Два... Один!","All") ; wait(3) ; CurrentRockets = CurrentRockets + 1
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("ПУСК!! (Потратил "..CurrentRockets.."/"..AllRockets..")","All")
-    wait(1)
-    if CurrentRockets == AllRockets then
-        wait(4)
-        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Боезапас отстрелял!","All") ; wait(0.5)
-        CurrentRockets = 0
-        print("Nieolowsfs")
-    end
-end
-
-function SucCoord(player)
-    for i, v in pairs(game.Players:GetChildren()) do
-        if v.Name == player then
-            local first = (math.floor(v.Character.HumanoidRootPart.Position.X))
-            local second = (math.floor(v.Character.HumanoidRootPart.Position.Y))
-            local third = (math.floor(v.Character.HumanoidRootPart.Position.Z))
-            game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(codename .. ", " .. myname .. ", подтверждаю цель!","All") ; wait(1)
-            game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(v.Name..", X "..first..", Y ".. second ..", Z ".. third,"All")
+function GetPlayerInfo(plr_name)
+    print("Target Name - " .. plr_name .. " || Gold - " .. game.Players[plr_name].Data.Gold.Value)
+    for i, v in pairs(game.Players[plr_name].OtherData:GetChildren()) do
+        if string.sub(v.Name, 1, 1) == "N" then
+            if v.Value == "" then
+            else
+                print(v.Value)
+            end
         end
     end
 end
 
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lolpoppyus/Roblox-Lua/master/Pop%20UI%20Lib", true))()
 
-function GetCoord()
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(codename .. ", " .. myname .. ", Запрашиваю цель!","All")
-end
+local ui = library:Tab("Funny :|")
 
-Namewindow:Box("Разведка -", function(texttower, focuslost)
-    if focuslost then
-    codename = texttower
+local update = ui:Dropdown("Target - ", {},function(arg)
+    GetPlayerInfo(arg)
+end)
+
+
+while wait(1) do
+    local players = game.Players:GetChildren()
+    local array = {}
+
+    for i,v in pairs(players) do
+        table.insert(array,v.Name)
     end
- end)
 
- Namewindow:Box("Стрелок -", function(textshooter, focuslost)
-    if focuslost then
-    myname = textshooter
-    end
- end)
-
- Namewindow:Box("Цель -", function(texttarget, focuslost)
-    if focuslost then
-    targetname = texttarget
-    end
- end)
-
- ShooterWindow:Box("Боезапас -", function(ammo, focuslost)
-    if focuslost then
-     AllRockets = tonumber(ammo)
-    end
- end)
-
- ShooterWindow:Button("Запросить цель", function()
-    GetCoord()
- end)
-
- ShooterWindow:Button("Подтвердить координаты", function()
-    SucCoord(targetname)
- end)
-
- ShooterWindow:Button("Атаковать цель", function()
-    StartRocket()
- end)
-
- TowerWindow:Button("Дать цель", function()
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(myname .. ", " .. codename ..", Цель - " ..targetname,"All") ; wait(1)
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Высылаю координаты...","All")
- end)
-
- TowerWindow:Button("Координаты верны", function()
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(myname .. ", " .. codename ..", Координаты подтверждаю!","All") ; wait(2)
-    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("Огонь по готовности.","All")
- end)
+    update(array)
+end;
